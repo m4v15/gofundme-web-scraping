@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "jest ---testTimeout 10000",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "dev": "node-dev src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "jest": "^29.3.0",
     "jest-junit": "^14.0.1",
+    "node-dev": "^8.0.0",
     "supertest": "^6.3.1"
   }
 }
