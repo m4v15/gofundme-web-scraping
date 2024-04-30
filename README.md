@@ -4,6 +4,26 @@ An application to accept post requests with a `url` prop in the body and scrape 
 
 Forked & adapted from https://github.com/mwaz/cheerio-web-scraping.git 
 
+# How to use the api
+
+1. Send a `POST` request to `/scrape` with a body shape `{ url: //some gofundme fundraiser }`
+2. Receive response in the form:
+```
+{
+    "progressString": "30455",
+    "targetString": "200000",
+    "currency": "kr",
+    "message": "Details scraped successfully",
+    "filename": "2024-4-30-12-55-27.json"
+}
+```
+
+### Notes:
+
+This has not been tested thoroughly yet, needs more testing for currency and null responses.
+
+# Dev Instructions
+
 ## 1. Clone repo
 
 ```bash
@@ -30,7 +50,7 @@ npm run dev
 npm run test
 ```
 
-## Details
+## About
 
 This repo is built following a tutorial published on CircleCI blog under the CircleCI Guest Writer Program.
 
