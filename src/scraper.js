@@ -5,6 +5,10 @@ const { generateFilename } = require("./utils");
 
 const baseUrl = "https://www.gofundme.com";
 
+router.get("/", (req, res) => {
+  res.send("welcome to the gofundme scraper")
+})
+
 router.post("/scrape", async (req, res) => {
   // Get the URL from the request body
   const { url } = req.body;
