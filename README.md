@@ -1,29 +1,27 @@
-# Webscrapping with Nodejs and Cheerio
+# Webscraping GoFundMe with Nodejs and Cheerio
 
-[![CircleCI](https://circleci.com/gh/mwaz/cheerio-web-scraping.svg?style=svg)](https://circleci.com/gh/mwaz/cheerio-web-scraping)
+An application to accept post requests with a `url` prop in the body and scrape the progress, currency & target of a gofundme fundraiser
 
-<p align="center"><img src="https://avatars3.githubusercontent.com/u/59034516"></p>
-
-An application to show how we can configure okta auth in a React application
+Forked & adapted from https://github.com/mwaz/cheerio-web-scraping.git 
 
 ## 1. Clone repo
 
 ```bash
-git clone https://github.com/mwaz/cheerio-web-scraping.git
+git clone https://github.com/m4v15/gofundme-web-scraping
 ```
 ## 2. Cd into cloned repository 
 ```bash
-cd cheerio-web-scraping
+cd gofundme-web-scraping
 ```
 
 ## 3. Installl dependencies 
 ```bash
 npm install
 ```
-## 4. Start provider
+## 4. Start dev server
 
 ```bash
-npm start
+npm run dev
 ```
 
 ## 5. Run tests
