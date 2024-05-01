@@ -2,6 +2,8 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const router = require("express").Router();
 const { generateFilename } = require("./utils");
+const auth = require('./auth.js');
+
 
 const baseUrl = "https://www.gofundme.com";
 
@@ -9,7 +11,7 @@ router.get("/", (req, res) => {
   res.send("welcome to the gofundme scraper")
 })
 
-router.post("/scrape", async (req, res) => {
+router.post("/scrape", auth.authenticateKey, async (req, res) => {
   // Get the URL from the request body
   const { url } = req.body;
   // Validate the URL
