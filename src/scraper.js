@@ -29,6 +29,8 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
       // Load the HTML into cheerio
       const $ = cheerio.load(response.data); // Cheerio takes the HTML and parses it into a format that is easy to use
 
+      const title = $('meta[property="og:title"]').attr('content');
+      const imageURL = $('meta[property="og:image"]').attr('content');
       const progressString = $("div.hrt-disp-inline").text().replace(/[^0-9]/g, '')
       const currency = $("div.hrt-disp-inline").text().replace(/[0-9,]/g, '')
       const targetString = $("span.hrt-text-body-sm").text().replace(/[^0-9]/g, '')
@@ -37,6 +39,8 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
         progressString,
         targetString,
         currency,
+        title,
+        imageURL,
         message: "Details scraped successfully",
         filename: generateFilename(),
       });

@@ -1,6 +1,10 @@
+require('dotenv/config')
+
 const request = require("supertest");
 const fs = require("fs");
 const server = require("../src/server");
+
+const api_key = process.env.API_KEY
 
 // Scraper test suite
 describe("scraper", () => {
@@ -14,7 +18,7 @@ describe("scraper", () => {
             url: testScrapeUrl,
         };
         // Make a POST request to the /scrape route
-        const response = await request(server).post("/scrape").send(body);
+        const response = await request(server).post("/scrape").set({ 'x-api-key': process.env.API_KEY }).send(body);
         // Assert that the response status code is 200
         expect(response.statusCode).toBe(200);
         // Assert that the response body has a products property
@@ -31,7 +35,9 @@ describe("scraper", () => {
             url: testScrapeUrl,
         };
         // Make a POST request to the /scrape route
-        const response = await request(server).post("/scrape").send(body);
+        const response = await request(server).post("/scrape").set({ 'x-api-key': process.env.API_KEY }).send(body);
+        console.log(response.body)
+
         expect(response.body).toHaveProperty("progressString");
 ;
     })
@@ -44,7 +50,7 @@ describe("scraper", () => {
             url: testScrapeUrl,
         };
         // Make a POST request to the /scrape route
-        const response = await request(server).post("/scrape").send(body);
+        const response = await request(server).post("/scrape").set({ 'x-api-key': process.env.API_KEY }).send(body);
         // Assert that the response body has a products property
         expect(response.body).toHaveProperty("currency");
     })
@@ -57,7 +63,7 @@ describe("scraper", () => {
             url: testScrapeUrl,
         };
         // Make a POST request to the /scrape route
-        const response = await request(server).post("/scrape").send(body);
+        const response = await request(server).post("/scrape").set({ 'x-api-key': process.env.API_KEY }).send(body);
         // Assert that the response status code is 200
         expect(response.body).toHaveProperty("targetString");
     });
