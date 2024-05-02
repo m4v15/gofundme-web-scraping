@@ -5,7 +5,7 @@ const { generateFilename } = require("./utils");
 const auth = require('./auth.js');
 
 
-const baseUrl = "https://www.gofundme.com";
+const baseUrl = "w";
 
 router.get("/", (req, res) => {
   res.send("welcome to the gofundme scraper")
@@ -43,6 +43,11 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
         imageURL,
         message: "Details scraped successfully",
         filename: generateFilename(),
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: "Error retrieving GFM URL",
+        error: error.message,
       });
     });
   } catch (error) {
