@@ -46,9 +46,10 @@ router.post(`/${process.env.DBAPIURL}`, auth.authenticateKey, async (req, res) =
     console.log(req.body)
 
     const { spreadsheetData } = req.body;
-    console.log( spreadsheetData )
+    const parsedData = JSON.parse(spreadsheetData)
   
-    await mainAdd(spreadsheetData)
+    console.log({parsedData})
+    await mainAdd(parsedData)
     res.send("thanks, all done")
   } catch (error) {
     res.status(500).json({
