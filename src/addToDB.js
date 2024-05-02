@@ -43,8 +43,10 @@ router.post(`/${process.env.DBAPIURL}`, auth.authenticateKey, async (req, res) =
   // clean them
   // Add to DB
   try {
+    console.log(req.body)
 
     const { spreadsheetData } = req.body;
+    console.log( spreadsheetData )
   
     await mainAdd(spreadsheetData)
     res.send("thanks, all done")
