@@ -6,6 +6,33 @@ const server = require("../src/server");
 
 const api_key = process.env.API_KEY
 
+const fakeSpreadSheetData = [
+    {
+      url: 'https://www.gofundme.com/f/help-tasneem-hazem-families-to-escape-from-death?utm_campaign=p_cp+share-sheet&utm_medium=copy_link_all&utm_source=customer&utm_term=CP_SSS_control',
+      progress: '$2000',
+      title: 'Donate to Help Families of Tasneem & Hazem Escape from Death, organised by Omar Musallam',
+      imageurl: 'https://d2g8igdw686xgo.cloudfront.net/78145441_170998071241804_r.jpeg'
+    },
+    {
+      url: 'https://www.gofundme.com/f/war-torn-dreams-help-gaza-engineer-family-rebuild',
+      progress: '$1,982',
+      title: 'Donate to War Torn Dreams: Help Gaza Engineer Family Rebuild, organized by Katherine Young',
+      imageurl: 'https://d2g8igdw686xgo.cloudfront.net/78990895_1710862876796365_r.jpeg'
+    },
+    {
+      url: 'https://www.gofundme.com/f/urgent-reliefevacuating-my-family-from-gazas-conflict-zone',
+      progress: '$2,778',
+      title: "Donate to Urgent Relief:Evacuating My Family from Gaza's Conflict Zone, organized by Mohammed Ahmed",
+      imageurl: 'https://d2g8igdw686xgo.cloudfront.net/79353891_17130328322684_r.jpeg'
+    },
+    {
+      url: 'https://www.gofundme.com/f/our-lives-were-full-of-happiness-but?utm_campaign=p_cp+fundraiser-sidebar&utm_medium=copy_link_all&utm_source=customer',
+      progress: '$3,197',
+      title: 'Donate to HELP Palestinian separated couple rebuild !, organized by Ritechal Joussef',
+      imageurl: 'https://d2g8igdw686xgo.cloudfront.net/78518277_1712883660753044_r.png'
+    }
+  ]
+
 // Scraper test suite
 describe("scraper", () => {
     // Test the /scrape route (type of test: integration)
@@ -67,6 +94,21 @@ describe("scraper", () => {
         // Assert that the response status code is 200
         expect(response.body).toHaveProperty("targetString");
     });
+    describe("db", () => {
+        // Test the /scrape route (type of test: integration)
+        test("POST /addToDB returns a 200 status code", async () => {
+            // Create a mock request body
+         
+            const body = {
+                spreadSheetData: fakeSpreadSheetData,
+            };
+            // Make a POST request to the /scrape route
+            const response = await request(server).post("/addToDB").set({ 'x-api-key': process.env.API_KEY }).send(body);
+            // Assert that the response status code is 200
+            expect(response.statusCode).toBe(200);
+            // Assert that the response body has a products property
+        })
+    })
 });
 // close the server and delete the test data directory after all tests have run
 afterAll(() => {
