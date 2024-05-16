@@ -39,10 +39,10 @@ async function mainAdd(data) {
 router.post(`/${process.env.DBAPIURL}`, auth.authenticateKey, async (req, res) => {
   try {
 
-    const { spreadsheetData } = req.body;
+    const spreadsheetData = JSON.parse(req.body.spreadsheetData);
 
     await mainAdd(spreadsheetData)
-    
+
     res.send("thanks, all done")
   } catch (error) {
     console.log(error)

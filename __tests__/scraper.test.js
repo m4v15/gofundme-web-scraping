@@ -103,8 +103,10 @@ describe("scraper", () => {
             // Create a mock request body
          
             const body = {
-                spreadsheetData: fakeSpreadSheetData,
+                "spreadsheetData": JSON.stringify(fakeSpreadSheetData),
             };
+
+
             // Make a POST request to the /scrape route
             const response = await request(server).post(`/${process.env.DBAPIURL}`).set({ 'x-api-key': process.env.API_KEY }).send(body);
             // Assert that the response status code is 200
