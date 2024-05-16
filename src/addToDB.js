@@ -7,8 +7,8 @@ async function addRows(client, gfmData) {
   try {
 
     const insertedGfms = await sql.query(
-      `INSERT INTO gfms (url, imageurl, title, progress)
-       SELECT url, imageurl, title, progress FROM json_populate_recordset(NULL::gfms, $1)
+      `INSERT INTO gfms (url, imageurl, title, progress, target)
+       SELECT url, imageurl, title, progress, target FROM json_populate_recordset(NULL::gfms, $1)
        ON CONFLICT (url) DO UPDATE
        SET progress = EXCLUDED.progress`,
       [JSON.stringify(gfmData)]
@@ -27,10 +27,8 @@ async function mainAdd(data) {
   const client = await db.connect();
   console.log("connected to db");
 
-  // await createTable(client)
-  // console.log('table created')
   const tableRows = data
-  console.log({data})
+  console.log({tableRows})
   await addRows(client, tableRows)
   console.log(`added ${tableRows.length} lines of data to DB`);
 
@@ -39,19 +37,15 @@ async function mainAdd(data) {
 
 
 router.post(`/${process.env.DBAPIURL}`, auth.authenticateKey, async (req, res) => {
-  // get list of URLS & progresses from googlesheet
-  // clean them
-  // Add to DB
   try {
-    console.log(req.body)
 
     const { spreadsheetData } = req.body;
-    const parsedData = JSON.parse(spreadsheetData)
-  
-    console.log({parsedData})
-    await mainAdd(parsedData)
+
+    await mainAdd(spreadsheetData)
+    
     res.send("thanks, all done")
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "Error adding to DB",
       error: error.message,
