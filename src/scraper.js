@@ -61,6 +61,7 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
 router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
   // Get the URL from the request body
   const { urls } = req.body;
+  console.log({urls})
   // Validate the URL
   if (!urls[0].includes(baseUrl)) {
     console.log(urls[0])
