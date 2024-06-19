@@ -75,39 +75,32 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
 
   try {
     // Get the HTML from the URL
-    let scrapeResponses = []
+    let GFMdata = []
     for (const url of urls) {
-      console.log({url})
       try {
         let axiosResponse = await axios.get(url)
-        scrapeResponses.push(axiosResponse)
-      }
-      catch(err) {
-        console.log("error fetching data")
-      }
-    }
-    const GFMdata = scrapeResponses.map((response) => {
-        if (!!response.data)  {
-          const $ = cheerio.load(response.data); // Cheerio takes the HTML and parses it into a format that is easy to use
+        const $ = cheerio.load(axiosResponse.data); // Cheerio takes the HTML and parses it into a format that is easy to use
           
           const title = $('meta[property="og:title"]').attr('content');
           const imageURL = $('meta[property="og:image"]').attr('content');
           const progressString = $("div.hrt-disp-inline").text().replace(/[^0-9]/g, '')
           const currency = $("div.hrt-disp-inline").text().replace(/[0-9,]/g, '')
           const targetString = $("span.hrt-text-body-sm").text().replace(/[^0-9]/g, '')
-          const url = response.config.url
           
-          return {
+          GFMdata.push({
             progressString,
             targetString,
             currency,
             title,
             imageURL,
             url
-          }
-        }
-        return {}
-    })
+          })
+      }
+      catch(err) {
+        console.log(err)
+        console.log("error fetching data")
+      }
+    }
     res.json({
       GFMdata,
       message: "Details scraped successfully"
