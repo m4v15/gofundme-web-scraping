@@ -62,6 +62,7 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
   // Get the URL from the request body
   const { urls } = req.body;
   console.log({urls})
+
   // Validate the URL
   if (!urls[0].includes(baseUrl)) {
     console.log(urls[0])
@@ -74,10 +75,18 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
 
   try {
     // Get the HTML from the URL
-    Promise.all(urls.map(url => axios.get(url).catch(err => Promise.resolve(""))))
-      .then((responses) => {
-        const GFMdata = responses.map(response => {
-
+    let scrapeResponses = []
+    for (const url of urls) {
+      console.log({url})
+      try {
+        let axiosResponse = await axios.get(url)
+        scrapeResponses.push(axiosResponse)
+      }
+      catch(err) {
+        console.log("error fetching data")
+      }
+    }
+    const GFMdata = scrapeResponses.map((response) => {
         if (!!response.data)  {
           const $ = cheerio.load(response.data); // Cheerio takes the HTML and parses it into a format that is easy to use
           
@@ -86,6 +95,7 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
           const progressString = $("div.hrt-disp-inline").text().replace(/[^0-9]/g, '')
           const currency = $("div.hrt-disp-inline").text().replace(/[0-9,]/g, '')
           const targetString = $("span.hrt-text-body-sm").text().replace(/[^0-9]/g, '')
+          const url = response.config.url
           
           return {
             progressString,
@@ -93,21 +103,14 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
             currency,
             title,
             imageURL,
+            url
           }
         }
         return {}
-        })
-        res.json({
-          GFMdata,
-          message: "Details scraped successfully"
-        })
-      })
-    .catch(error => {
-      console.log(error)
-      res.status(500).json({
-        message: "Error retrieving GFM URL",
-        error: error.message,
-      });
+    })
+    res.json({
+      GFMdata,
+      message: "Details scraped successfully"
     })
   } catch (error) {
     res.status(500).json({
