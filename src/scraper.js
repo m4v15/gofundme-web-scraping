@@ -63,6 +63,7 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
   const { urls } = req.body;
   // Validate the URL
   if (!urls[0].includes(baseUrl)) {
+    console.log(urls[0])
     console.log("Invalid URL");
     res.status(400).json({
       message: "Error scraping details",
@@ -109,7 +110,7 @@ router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({
-      message: "Error scraping products",
+      message: "Error scraping all urls",
       error: error.message,
     });
   }
