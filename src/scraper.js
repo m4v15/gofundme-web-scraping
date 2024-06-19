@@ -58,5 +58,62 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
   }
 });
 
+router.post("/bulk-scrape", auth.authenticateKey, async (req, res) => {
+  // Get the URL from the request body
+  const { urls } = req.body;
+  // Validate the URL
+  if (!urls[0].includes(baseUrl)) {
+    console.log("Invalid URL");
+    res.status(400).json({
+      message: "Error scraping details",
+    })
+    return;
+  }
+
+  try {
+    // Get the HTML from the URL
+    Promise.all(urls.map(url => axios.get(url).catch(err => Promise.resolve(""))))
+      .then((responses) => {
+        const GFMdata = responses.map(response => {
+
+        if (!!response.data)  {
+          const $ = cheerio.load(response.data); // Cheerio takes the HTML and parses it into a format that is easy to use
+          
+          const title = $('meta[property="og:title"]').attr('content');
+          const imageURL = $('meta[property="og:image"]').attr('content');
+          const progressString = $("div.hrt-disp-inline").text().replace(/[^0-9]/g, '')
+          const currency = $("div.hrt-disp-inline").text().replace(/[0-9,]/g, '')
+          const targetString = $("span.hrt-text-body-sm").text().replace(/[^0-9]/g, '')
+          
+          return {
+            progressString,
+            targetString,
+            currency,
+            title,
+            imageURL,
+          }
+        }
+        return {}
+        })
+        res.json({
+          GFMdata,
+          message: "Details scraped successfully"
+        })
+      })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({
+        message: "Error retrieving GFM URL",
+        error: error.message,
+      });
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: "Error scraping products",
+      error: error.message,
+    });
+  }
+});
+
 // Export the router so it can be used in the server.js file
 module.exports = router;
