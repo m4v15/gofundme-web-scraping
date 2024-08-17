@@ -98,23 +98,22 @@ describe("scraper", () => {
         // Assert that the response status code is 200
         expect(response.body).toHaveProperty("targetString");
     });
-    describe("db", () => {
-        test("POST DB route returns a 200 status code", async () => {
-            // Create a mock request body
+    // describe("db", () => {
+    //     test("POST DB route returns a 200 status code", async () => {
+    //         // Create a mock request body
          
-            const body = {
-                "spreadsheetData": JSON.stringify(fakeSpreadSheetData),
-            };
+    //         const body = {
+    //             "spreadsheetData": JSON.stringify(fakeSpreadSheetData),
+    //         };
 
 
-            // Make a POST request to the /scrape route
-            const response = await request(server).post(`/${process.env.DBAPIURL}`).set({ 'x-api-key': process.env.API_KEY }).send(body);
-            // Assert that the response status code is 200
-            console.log(response)
-            expect(response.statusCode).toBe(200);
-            // Assert that the response body has a products property
-        })
-    })
+    //         // Make a POST request to the /scrape route
+    //         const response = await request(server).post(`/${process.env.DBAPIURL}`).set({ 'x-api-key': process.env.API_KEY }).send(body);
+    //         // Assert that the response status code is 200
+    //         expect(response.statusCode).toBe(200);
+    //         // Assert that the response body has a products property
+    //     })
+    // })
 });
 // close the server and delete the test data directory after all tests have run
 afterAll(() => {

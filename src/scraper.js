@@ -31,9 +31,9 @@ router.post("/scrape", auth.authenticateKey, async (req, res) => {
 
       const title = $('meta[property="og:title"]').attr('content');
       const imageURL = $('meta[property="og:image"]').attr('content');
-      const progressString = $("div.hrt-disp-inline").text().replace(/[^0-9]/g, '')
-      const currency = $("div.hrt-disp-inline").text().replace(/[0-9,]/g, '')
-      const targetString = $("span.hrt-text-body-sm").text().replace(/[^0-9]/g, '')
+      const progressString = $("div.progress-meter_progressMeterHeading__A6Slt").children('span')[0].children[0].data.replace(/[^0-9]/g, '')
+      const currency = $("div.progress-meter_progressMeterHeading__A6Slt").children('span')[0].children[0].data.replace(/[0-9,]/g, '')
+      const targetString = $("div.progress-meter_progressMeterHeading__A6Slt").children('span')[1].children[0].data.replace(/[^0-9]/g, '')
 
       res.json({
         progressString,
