@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const scrapeProducts = require('./scraper');
 const addToDB = require("./addToDB")
 const getGFMs = require("./GET")
-const puppeteerFetch = require("./puppeteer")
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
