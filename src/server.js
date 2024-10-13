@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // middleware for routes
 app.use('/', scrapeProducts);
 app.use('/', addToDB);
-app.use('/', puppeteerFetch)
+// app.use('/', puppeteerFetch)
 app.use('/api/gfms', getGFMs)
 
 
